@@ -1,5 +1,11 @@
 # React + TypeScript + Vite
 
+Project documentation:
+
+- [Coding Standards](docs/coding-standards/README.md) - branch names, naming conventions, TypeScript style, and React component standards.
+- [Project Structure](docs/project-structure/README.md) - feature-based organization and dependency boundaries.
+- [Tech Stack](docs/tech-stack/README.md) - PixiJS rendering and interaction, state management, API fetching, forms, routing, Tailwind, IndexedDB, and tooling.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
