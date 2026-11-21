@@ -60,7 +60,7 @@ See the TypeScript references on [strict checking](https://www.typescriptlang.or
 
 ## 3. React component standards
 
-- Write function components with typed props. `React.FC` is not required; let TypeScript infer the return type unless an explicit annotation helps.
+- Write function components that accept props as arrow functions using `const Component = (props: Props) => ...`, with the component's named props type. Access values through `props` rather than destructuring the parameter. Let TypeScript infer the return type unless an explicit annotation helps.
 - Give each component one understandable UI responsibility. Split when responsibilities diverge, rather than enforcing an arbitrary line limit.
 - Keep props small and descriptive. Pass the data a component needs and callbacks describing user intent, rather than a whole application store or a general state setter.
 - Prefer composition and explicit `children` typing when content is accepted. Use discriminated props when modes require different fields instead of several conflicting booleans.
@@ -85,23 +85,19 @@ type BlueprintListProps = {
   readonly onSelect: (blueprintId: string) => void
 }
 
-export function BlueprintList({
-  blueprints,
-  selectedId,
-  onSelect,
-}: BlueprintListProps) {
-  if (blueprints.length === 0) {
+export const BlueprintList = (props: BlueprintListProps) => {
+  if (props.blueprints.length === 0) {
     return <p>No saved blueprints yet.</p>
   }
 
   return (
     <ul aria-label="Saved blueprints">
-      {blueprints.map((blueprint) => (
+      {props.blueprints.map((blueprint) => (
         <li key={blueprint.id}>
           <button
             type="button"
-            aria-pressed={blueprint.id === selectedId}
-            onClick={() => onSelect(blueprint.id)}
+            aria-pressed={blueprint.id === props.selectedId}
+            onClick={() => props.onSelect(blueprint.id)}
           >
             {blueprint.name}
           </button>
