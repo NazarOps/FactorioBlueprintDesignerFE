@@ -1,5 +1,13 @@
 # Repository Guidelines
 
+## Project Source of Truth & Priorities
+
+At the start of every Codex session, read [Factorio Blueprint Designer V1 Requirements](docs/Factorio_Blueprint_Designer_V1_Requirements.md) before planning or implementing work. This document is the main source of truth for the frontend client going forward: use it for project guidance, V1 scope, milestone priorities, functional and non-functional requirements, user stories, and release acceptance criteria.
+
+Prioritize Milestone 1 (interactive editor together with automatic IndexedDB persistence) until its acceptance criteria are met, then Milestone 2 (Factorio blueprint import/export). Check the implementation against the requirements and release checklist to identify the next unfinished priority; do not assume a milestone is complete based only on existing UI or documentation. V1 requires both milestones.
+
+Use the requirements document to resolve conflicting scope or priority guidance in other project documentation, while continuing to follow applicable coding and architecture standards. Respect its Must/Should priorities, keep deferred post-V1 features out of baseline V1 work, and treat decisions marked as open as unresolved rather than established requirements. Follow explicit user instructions when they change the agreed scope or priorities.
+
 ## Project Structure & Module Organization
 
 This Factorio Blueprint Designer frontend currently uses React, TypeScript, and Vite. `src/main.tsx` mounts `src/App.tsx`; styles live in `src/index.css` and `src/App.css`. Bundled images belong in `src/assets/`; static files belong in `public/`. Build output goes to ignored `dist/`.
