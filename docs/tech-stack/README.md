@@ -6,9 +6,9 @@ Related guides: [Coding Standards](../coding-standards/README.md) and [Project S
 
 ## Delivery scope and setup status
 
-Product scope follows `FactorioBlueprintDesignerBE/Docs/Factorio_Blueprint_Designer_V1_Requirements.md`: deliver the guest editor with IndexedDB persistence first, then Factorio import/export. Accounts and cloud APIs are later work. Core editing must work without cloud services.
+Product scope follows [the frontend V1 requirements](../Factorio_Blueprint_Designer_V1_Requirements.md): deliver the guest editor with IndexedDB persistence first, then Factorio import/export. Accounts and cloud APIs are later work. Core editing must work without cloud services.
 
-`package.json` and `package-lock.json` define installed versions. React, TypeScript, Vite, ESLint, and npm are already part of the starter. PixiJS, Tailwind CSS, Zustand, TanStack Query, Axios, React Hook Form, Zod, and React Router are chosen technologies pending installation and configuration. IndexedDB is a browser API; a wrapper library has not been chosen.
+`package.json` and `package-lock.json` define installed versions. The editor draft configures React, TypeScript, Vite, ESLint, PixiJS, Tailwind CSS, Zustand, React Hook Form, Zod, and the Zod form resolver. Vitest, fake-indexeddb and Playwright provide behavior tests. TanStack Query, Axios and React Router remain chosen technologies for future features that need remote state, HTTP and application routes. IndexedDB uses a native, versioned adapter; no wrapper library has been selected.
 
 ## Technology overview
 
@@ -174,7 +174,7 @@ Keep import/export behind the Factorio feature's serialization boundary. A compr
 
 The installed development stack uses Vite, TypeScript, ESLint, and npm. `build` runs `tsc -b` before the production bundle.
 
-The checked-in tsconfigs do not explicitly set `strict`. Make strict checking explicit and address resulting errors in a tooling change; consider `noUncheckedIndexedAccess` for indexed entity collections.
+The application tsconfig explicitly enables `strict`. Consider `noUncheckedIndexedAccess` for indexed entity collections in a later tooling change.
 
 Profile editor interactions with representative layouts before introducing viewport culling, animation-frame scheduling, or workers. Document measured limits rather than inventing frame-rate or blueprint-size guarantees.
 
@@ -188,7 +188,7 @@ Match tests to meaningful behavior and risk:
 - **Persistence/integration:** create, rename, edit, reopen, delete, migration failures, rapid autosaves, and stale completion ordering. Verify actual IndexedDB/browser behavior for persistence claims.
 - **Browser workflows:** reload/reopen saved work, edit without an available backend, and import-edit-export round trips. Invalid import must leave existing work intact; unsupported data must produce a warning.
 
-The repository currently has no test runner or `test` script. Vitest with React Testing Library and Playwright are possible future choices, not installed requirements. Introduce test tooling with the first feature that needs it; do not document nonexistent commands as passing checks.
+The editor draft includes Vitest (`npm test`) with fake-indexeddb for domain/storage tests and Playwright (`npm run test:e2e`) for real-browser workflows. Install Chromium with `npx playwright install chromium` before running browser checks. React Testing Library remains an option for future component-focused tests.
 
 ### Available checks
 
@@ -196,6 +196,8 @@ The repository currently has no test runner or `test` script. Vitest with React 
 npm ci
 npm run lint
 npm run build
+npm test
+npm run test:e2e
 ```
 
 `build` runs `tsc -b` before Vite's production build. ESLint currently includes TypeScript recommended rules, React Hooks rules, and React Refresh checks. Type-aware linting and an automated formatter are future tooling decisions; do not claim they are already enforced.
