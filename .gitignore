@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Original Factorio game assets
+/public/assets/factorio/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
