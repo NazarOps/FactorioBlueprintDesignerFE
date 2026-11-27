@@ -16,7 +16,9 @@ export const createBlueprintRenderer = async (host: HTMLElement, signal: AbortSi
   await app.init({ width: host.clientWidth, height: host.clientHeight, background: '#171c20',
     resolution: Math.min(window.devicePixelRatio || 1, 2), autoDensity: true,
     antialias: true, autoStart: false, preference: 'webgl' })
-  if (signal.aborted) { app.destroy(true, { children: true }); return () => undefined }
+  // StrictMode can initialize a replacement while this instance is still
+  // awaiting WebGL. Never release Pixi's process-wide pools from one instance.
+  if (signal.aborted) { app.destroy({ removeView: true, releaseGlobalResources: false }, { children: true }); return () => undefined }
 
   const canvas = app.canvas
   canvas.setAttribute('aria-label', 'Blueprint grid. Choose an entity to place; select and drag to move. Use toolbar commands to edit.')
@@ -280,6 +282,6 @@ export const createBlueprintRenderer = async (host: HTMLElement, signal: AbortSi
     canvas.removeEventListener('pointerleave', handleLeave)
     canvas.removeEventListener('wheel', handleWheel)
     canvas.removeEventListener('contextmenu', preventMenu)
-    app.destroy(true, { children: true })
+    app.destroy({ removeView: true, releaseGlobalResources: false }, { children: true })
   }
 }
