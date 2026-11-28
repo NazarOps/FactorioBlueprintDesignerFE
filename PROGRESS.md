@@ -43,14 +43,30 @@ This is a verified first draft in Chromium, not a declaration of complete V1 rel
 
 ### Focused commits
 
-1. `71e5c73` — configure editor dependencies, theme and strict TypeScript.
-2. `f1e04cf` — reversible editing, validated local persistence and eight behavior tests.
-3. `69642c2` — PixiJS grid runtime, pointer gestures and keyboard commands.
-4. `5e76db6` — searchable palette, toolbar and entity inspector.
-5. `d7abf5d` — application shell, local library, rename/delete dialogs and help.
-6. `b7bee1f` — preserve shared Pixi resources across asynchronous StrictMode remounts.
-7. `754d2e8` — six passing Playwright scenarios and ignored test artifacts.
-8. Documentation commit — this progress log, README workflow, updated setup status and UI preview.
+The eight original commits were reworded locally to add `Refs:` footers. Their file trees, authors and timestamps are unchanged; the hashes below replace the original hashes.
+
+| Current commit | Original commit | Work | Referenced frontend issues |
+| --- | --- | --- | --- |
+| `77a0d65` | `71e5c73` | Dependencies, theme and strict TypeScript | #8 |
+| `aaf78fb` | `f1e04cf` | Commands, catalog, persistence and unit/storage tests | #9, #10, #12, #13, #14, #15, #16, #21, #22, #23, #24 |
+| `3979457` | `69642c2` | PixiJS grid, pointer gestures and keyboard commands | #11, #13, #14, #15, #26 |
+| `1425b44` | `5e76db6` | Palette, toolbar and inspector | #12, #14, #15, #21, #26 |
+| `1bdb2ba` | `d7abf5d` | Application shell, library, dialogs and help | #8, #16, #22, #23, #24, #25, #26 |
+| `14b6c38` | `b7bee1f` | PixiJS StrictMode resource cleanup fix | #11 |
+| `440a8fd` | `754d2e8` | Six Playwright workflows | #11, #13, #14, #15, #16, #21, #22, #23, #24, #25, #27 |
+| `927a1f3` | `ca17884` | Progress log, README, stack status and screenshot | #7, #8, #25, #27 |
+
+Issue numbers refer to [NazarOps/FactorioBlueprintDesignerFE](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues). These references identify contributions and do not close the issues or claim all of their acceptance criteria are complete.
+
+### Issue traceability follow-up — 2026-11-28
+
+- Reviewed the existing frontend issues and mapped all eight original commits to the relevant work items using non-closing `Refs:` footers. Confirmed the editor branch is absent from the remote before rewriting local history.
+- Preserved the original history at local ref `refs/codex-backups/editor-first-draft-before-issue-references`. Verified the rewritten tip has exactly the same file tree as the original tip before editing documentation.
+- Updated `AGENTS.md` to require issue review before implementation, issue references in commits/PRs/progress, new issues for changed requirements not already tracked, and explicit distinction between partial work and completed acceptance criteria.
+- Existing issues already cover this editor draft; this traceability update does not change product requirements or require a duplicate implementation issue. The workflow documentation follows the foundation work tracked in [#8](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/8).
+- Remaining issue-level work includes [#7](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/7) scope/browser decisions, [#8](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/8) routing/CI, [#17](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/17) performance measurement, and broader acceptance in [#26](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/26)/[#27](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/27). In [#24](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/24), deletion currently updates the in-memory library before the write completes; its database-confirmed UI acceptance criterion remains outstanding.
+- Validation for the documentation follow-up: commit-to-issue mapping and unchanged implementation trees verified; `npm run lint`, `npm run build` and `git diff --check` passed. Prior test results above remain applicable because application and test code are unchanged.
+- Follow-up commit: `docs(workflow): require frontend issue traceability`, referencing #8, contains the instruction updates and refreshed commit mapping in this log.
 
 ### Remaining / release boundaries
 
@@ -63,4 +79,4 @@ This is a verified first draft in Chromium, not a declaration of complete V1 rel
 
 ### Latest update
 
-Editor first draft complete. Eight unit/storage tests, six browser workflows, lint and production build pass. Work is split into focused Conventional Commits on `feat/editor-first-draft`. No remote push or deployment has been performed.
+Editor first draft complete, with the issue-level acceptance gaps documented above. Eight unit/storage tests and six browser workflows passed for the unchanged implementation. All eight original commits now reference frontend issues, and `AGENTS.md` defines the issue-tracking workflow for future implementation. Lint, production build and documentation whitespace checks pass. No remote push, issue closure or deployment has been performed.

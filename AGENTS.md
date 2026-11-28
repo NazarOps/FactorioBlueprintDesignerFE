@@ -8,6 +8,16 @@ Prioritize Milestone 1 (interactive editor together with automatic IndexedDB per
 
 Use the requirements document to resolve conflicting scope or priority guidance in other project documentation, while continuing to follow applicable coding and architecture standards. Respect its Must/Should priorities, keep deferred post-V1 features out of baseline V1 work, and treat decisions marked as open as unresolved rather than established requirements. Follow explicit user instructions when they change the agreed scope or priorities.
 
+## Frontend Issue Tracking
+
+Before implementing code, review the [frontend GitHub issues](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues) and read the relevant issues, acceptance criteria and dependencies. Use `gh issue list` / `gh issue view` when available. Match the planned work to existing issue numbers and the requirements document; do not infer completion from an issue title or existing UI. The requirements document and explicit user instructions continue to govern scope when an issue conflicts with them.
+
+When agreed requirements change or introduce work not covered by the backlog, search existing issues to avoid duplicates, then create a new frontend issue for uncovered scope before implementing it. Include the requirement IDs where applicable, the change and its reason, milestone/priority, acceptance criteria, dependencies and verification plan. Link related existing issues. Do not treat unresolved product decisions as approved requirements or create duplicate issues for scope already tracked.
+
+Reference the relevant frontend issues in implementation commits, PR descriptions and `PROGRESS.md`. Use a commit body/footer such as `Refs: #11, #13` for partial or supporting work. Use `Closes #N` only when the entire issue's acceptance criteria are implemented and verified; a first draft or partial contribution must not imply the issue is complete. For another repository's issue, use its full URL or `owner/repository#N`.
+
+Keep `PROGRESS.md` current with implemented behavior, linked issues, actual validation results, remaining acceptance gaps and blockers. Make small, focused, well-documented Conventional Commits rather than one large implementation commit.
+
 ## Project Structure & Module Organization
 
 This Factorio Blueprint Designer frontend currently uses React, TypeScript, and Vite. `src/main.tsx` mounts `src/App.tsx`; styles live in `src/index.css` and `src/App.css`. Bundled images belong in `src/assets/`; static files belong in `public/`. Build output goes to ignored `dist/`.
@@ -38,7 +48,7 @@ No tests, test runner, `test` script, or coverage threshold currently exist. Int
 
 History contains short descriptive commits and merge PRs; the documented standard is Conventional Commits, e.g. `feat(editor): add entity rotation`. Use branches such as `fix/42-autosave-ordering`, omitting issue numbers when unavailable. Keep commits focused and include lockfile updates for dependency changes.
 
-PRs should explain behavior, link relevant issues, report validation, and include screenshots for UI changes.
+Commits must reference the relevant frontend issues as described above. PRs should explain behavior, link relevant issues, report validation, and include screenshots for UI changes.
 
 ## Assets & Configuration
 
