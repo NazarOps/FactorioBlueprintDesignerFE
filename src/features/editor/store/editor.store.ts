@@ -2,6 +2,8 @@ import { create } from 'zustand'
 import { createBlueprint } from '../../blueprints'
 import type { Blueprint, Direction, Entity, Prototype } from '../../blueprints'
 import { canPlace } from '../domain/placement'
+import { ENTITY_CATALOG } from '../domain/entityCatalog'
+import { directionForPrototype, rotateDirection } from '../domain/rotation'
 
 export type Tool = 'select' | 'place' | 'erase' | 'pan'
 export type SaveStatus = 'loading' | 'saving' | 'saved' | 'error' | 'load-error'
@@ -39,6 +41,9 @@ type EditorState = {
 
 export const activeBlueprint = (state: Pick<EditorState, 'blueprints' | 'activeId'>): Blueprint | undefined =>
   state.blueprints.find((blueprint) => blueprint.id === state.activeId)
+
+export const rotationTarget = (state: EditorState): Prototype | undefined => state.tool === 'place'
+  ? state.prototype : activeBlueprint(state)?.entities.find((entity) => entity.id === state.selectedId)?.prototype
 
 export const useEditorStore = create<EditorState>((set, get) => {
   const commit = (entities: Entity[]) => {
@@ -85,7 +90,8 @@ export const useEditorStore = create<EditorState>((set, get) => {
       const state = get()
       const document = activeBlueprint(state)
       if (!document) return
-      const entity: Entity = { id: crypto.randomUUID(), prototype: state.prototype, direction: state.direction, x, y }
+      const entity: Entity = { id: crypto.randomUUID(), prototype: state.prototype,
+        direction: directionForPrototype(state.prototype, state.direction), x, y }
       if (!canPlace(entity, document.entities)) {
         set({ notice: 'This footprint is occupied or outside the workspace limits.' })
         return
@@ -102,10 +108,16 @@ export const useEditorStore = create<EditorState>((set, get) => {
     },
     rotate: () => {
       const state = get()
+      const prototype = rotationTarget(state)
+      if (!prototype) return
+      if (!ENTITY_CATALOG[prototype].rotatable) {
+        set({ notice: `${ENTITY_CATALOG[prototype].name} cannot be rotated.` })
+        return
+      }
       const entities = activeBlueprint(state)?.entities ?? []
       const entity = state.tool === 'place' ? undefined : entities.find((item) => item.id === state.selectedId)
-      if (!entity) { set({ direction: ((state.direction + 1) % 4) as Direction }); return }
-      const candidate = { ...entity, direction: ((entity.direction + 1) % 4) as Direction }
+      if (!entity) { set({ direction: rotateDirection(state.direction), notice: '' }); return }
+      const candidate = { ...entity, direction: rotateDirection(entity.direction) }
       if (!canPlace(candidate, entities)) { set({ notice: 'Rotation blocked by another entity.' }); return }
       commit(entities.map((item) => item.id === entity.id ? candidate : item))
     },

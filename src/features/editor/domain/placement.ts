@@ -1,10 +1,11 @@
 import type { Entity } from '../../blueprints'
 import { ENTITY_CATALOG } from './entityCatalog'
+import { directionForPrototype } from './rotation'
 
 // Internal positions are integer tile coordinates at the footprint's top-left.
 export const footprint = (entity: Entity) => {
   const definition = ENTITY_CATALOG[entity.prototype]
-  const sideways = entity.direction % 2 === 1
+  const sideways = directionForPrototype(entity.prototype, entity.direction) % 2 === 1
   return {
     width: sideways ? definition.height : definition.width,
     height: sideways ? definition.width : definition.height,

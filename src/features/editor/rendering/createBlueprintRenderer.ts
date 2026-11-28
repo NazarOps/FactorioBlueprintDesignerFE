@@ -2,6 +2,7 @@ import { Application, Assets, Container, Graphics, Point, Sprite, Texture } from
 import type { Entity } from '../../blueprints'
 import { ENTITY_CATALOG } from '../domain/entityCatalog'
 import { canPlace, containsTile, footprint } from '../domain/placement'
+import { directionForPrototype } from '../domain/rotation'
 import { activeBlueprint, useEditorStore } from '../store/editor.store'
 
 const TILE_SIZE = 40
@@ -52,6 +53,7 @@ export const createBlueprintRenderer = async (host: HTMLElement, signal: AbortSi
 
   const drawEntity = (entity: Entity) => {
     const definition = ENTITY_CATALOG[entity.prototype]
+    const direction = directionForPrototype(entity.prototype, entity.direction)
     const size = footprint(entity)
     const w = size.width * TILE_SIZE
     const h = size.height * TILE_SIZE
@@ -70,19 +72,21 @@ export const createBlueprintRenderer = async (host: HTMLElement, signal: AbortSi
       const side = Math.min(w, h) * 0.79
       sprite.width = side
       sprite.height = side
-      sprite.rotation = entity.direction * Math.PI / 2
+      sprite.rotation = direction * Math.PI / 2
       container.addChild(sprite)
     }
-    // Explicit direction marker makes rotation visible even for symmetric icons.
-    const marker = new Graphics()
-    marker.poly([0, -6, 4, 1, -4, 1]).fill(0xf5d58f)
-    marker.position.set(w / 2, h / 2)
-    marker.rotation = entity.direction * Math.PI / 2
-    const offsets = [[0, -h / 2 + 7], [w / 2 - 7, 0], [0, h / 2 - 7], [-w / 2 + 7, 0]]
-    const offset = offsets[entity.direction]
-    marker.x += offset[0]
-    marker.y += offset[1]
-    container.addChild(marker)
+    // Only directional entities have an orientation to display.
+    if (definition.rotatable) {
+      const marker = new Graphics()
+      marker.poly([0, -6, 4, 1, -4, 1]).fill(0xf5d58f)
+      marker.position.set(w / 2, h / 2)
+      marker.rotation = direction * Math.PI / 2
+      const offsets = [[0, -h / 2 + 7], [w / 2 - 7, 0], [0, h / 2 - 7], [-w / 2 + 7, 0]]
+      const offset = offsets[direction]
+      marker.x += offset[0]
+      marker.y += offset[1]
+      container.addChild(marker)
+    }
     entitiesLayer.addChild(container)
   }
 
@@ -115,7 +119,8 @@ export const createBlueprintRenderer = async (host: HTMLElement, signal: AbortSi
     }
     let preview: Entity | undefined
     if (hover && state.tool === 'place') {
-      preview = { id: 'preview', prototype: state.prototype, direction: state.direction, ...hover }
+      preview = { id: 'preview', prototype: state.prototype,
+        direction: directionForPrototype(state.prototype, state.direction), ...hover }
     }
     if (drag?.kind === 'entity') {
       const draggedId = drag.id
