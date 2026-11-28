@@ -55,6 +55,8 @@ Priority: **Must** = required for V1; **Should** = useful but not a release bloc
 
 **Initial entity scope:** common Factorio entities such as transport belts, inserters, assembling machines, furnaces, chests and electric poles. The exact supported prototype-name list is to be fixed before implementing the import/export compatibility tests; rails, signals and complex configurations are deferred.
 
+**Placement and rotation clarification (2026-11-28, FR-10/FR-12/FR-13):** Rotation follows the supported prototype's game behavior. In the current draft catalog, belts and inserters have four cardinal directions; assembling machine 1, stone furnaces, chests and small electric poles do not expose manual rotation. Fixed entities have no direction marker and must not inherit the placement direction of a previously selected belt or inserter. Assembling machine 1 cannot craft with fluids. On assembling machines 2/3, a recipe requiring or producing fluid enables rotation of the fluid connection; the machine body stays upright. Those tiers and recipe configuration are not implemented by this clarification. See the [assembling machine 1](https://wiki.factorio.com/Assembling_machine_1), [assembling machine 2](https://wiki.factorio.com/Assembling_machine_2), and [inserter](https://wiki.factorio.com/Inserters) wiki references. The exact V1 catalog and compatibility target remain open.
+
 ### 3.3 Local storage and offline use
 
 | ID | Priority | Requirement | Acceptance criteria |

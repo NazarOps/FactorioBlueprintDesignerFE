@@ -8,7 +8,7 @@ import { Modal } from '../shared/ui/Modal'
 
 type DialogState = { kind: 'rename' } | { kind: 'delete'; id: string } | { kind: 'help' } | null
 const SAVE_LABELS = { loading: 'Loading workspace…', saving: 'Saving…', saved: 'All changes saved', error: 'Changes not saved', 'load-error': 'Storage unavailable' }
-const TOOL_HINTS = { select: 'Click to select · Drag to move · R to rotate', place: 'Click to place · R to rotate · Esc to select', erase: 'Click an entity to remove it · Ctrl/⌘ Z to undo', pan: 'Drag to pan · Scroll to zoom' }
+const TOOL_HINTS = { select: 'Click to select · Drag to move · R to rotate belts/inserters', place: 'Click to place · R to rotate belts/inserters · Esc to select', erase: 'Click an entity to remove it · Ctrl/⌘ Z to undo', pan: 'Drag to pan · Scroll to zoom' }
 
 const App = () => {
   const state = useEditorStore()
@@ -100,6 +100,7 @@ const App = () => {
       </Modal>}
       {dialog?.kind === 'help' && <Modal title="Your factory planning desk" onClose={() => setDialog(null)}>
         <p className="mb-5 text-sm leading-relaxed text-muted">Pick an entity and click to place. Switch to Select to drag existing entities. An amber outline marks your selection; red previews mean the footprint is blocked.</p>
+        <p className="mb-5 text-sm leading-relaxed text-muted">Belts and inserters can rotate. Assembling machine 1, furnaces, chests and poles have no manual rotation.</p>
         <dl className="grid grid-cols-2 gap-y-3 text-sm">
           {Object.entries({ 'Select / Place': 'V / B', 'Erase / Pan': 'E / H', 'Rotate clockwise': 'R', 'Remove selected': 'Delete', 'Undo / Redo': 'Ctrl/⌘ Z / Shift Z', 'Pan the grid': 'Space + drag', 'Zoom': 'Mouse wheel', 'Fit blueprint': 'Home', 'Cancel / deselect': 'Escape' }).map(([label, keys]) => <div className="contents" key={label}><dt className="text-muted">{label}</dt><dd className="text-right font-mono text-xs">{keys}</dd></div>)}
         </dl>

@@ -86,3 +86,45 @@ Editor first draft complete, with the issue-level acceptance gaps documented abo
 - Updated the README with the verified draft status, linked remaining acceptance gaps, and the contributor workflow for issue review, new requirements, commit references and progress logging. References: #7, #8, #24, #25, #26, #27 and the existing Milestone 2 issues.
 - Application and test code remain unchanged; prior unit/browser results still apply. `npm run lint`, `npm run build` and `git diff --check` passed for this documentation update.
 - The user requested publication of `feat/editor-first-draft` to GitHub after the focused README commit. The push result will be verified against the remote branch and reported separately.
+
+## Prototype rotation correction — 2026-11-28
+
+Branch: `fix/15-prototype-rotation`.
+
+References: [#15](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/15) (prototype-specific rotation), [#12](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/12) (catalog metadata), and [#13](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/13) (placement rules). Reviewed these issues and #7 before implementation. This fixes existing FR-10/FR-12/FR-13 acceptance criteria; no duplicate issue or expanded recipe feature was needed.
+
+### Implemented behavior
+
+- Added explicit rotation capabilities to the existing nine-prototype catalog. Belts and inserters retain four cardinal directions. Assembling machine 1, stone furnaces, wooden/steel chests and small electric poles cannot be manually rotated.
+- Applied the same rules to placement, footprints, keyboard commands, toolbar/inspector controls and Pixi rendering. Fixed entities stay upright and have no direction arrow or misleading cardinal label. The inspector explains why assembling machine 1 cannot rotate.
+- Fixed entities are placed with direction 0 even after rotating a belt. Returning to a belt/inserter retains its remembered placement direction. With nothing selected outside placement mode, rotation is a no-op.
+- Rejected rotations leave the document, revision, undo/redo history and autosave stream unchanged. Old saved fixed-entity directions remain readable and are ignored when rendering; this fix does not rewrite existing stored records.
+- Clarified the requirements and help text using the official wiki: [assembling machine 1](https://wiki.factorio.com/Assembling_machine_1) cannot use fluids; [assembling machine 2](https://wiki.factorio.com/Assembling_machine_2) exposes its rotatable connection only for recipes requiring or producing fluid. This is connection orientation, not rotation of the machine body.
+
+### Validation
+
+- `npm.cmd test`: **19 unit/storage tests passed**, covering all four directional prototypes, all five fixed prototypes, remembered placement direction, no-selection behavior, legacy data, history and the existing storage checks.
+- `npm.cmd run lint` and `npm.cmd run build`: **passed** after the final application changes.
+- First Chromium run: all **7 workflows passed**. On Windows, the runner waited for its npm-launched dev server during cleanup; stopping that test server allowed a successful exit. A screenshot review also identified a missing canvas-ready wait after reload in the new test; added that wait before the final browser run.
+- Final `npm.cmd run test:e2e`: **7 Chromium workflows passed in 40.1 seconds**, using a separately started Vite server to avoid the Windows cleanup issue. The new workflow verifies disabled rotation in placement/selection, keyboard rejection, unchanged undo behavior, restored fixed entities and persisted belt rotation. Reviewed the [rotation screenshot](docs/screenshots/entity-rotation.png): the assembler has no direction arrow; the belt points east; both rotation controls are disabled for the selected assembler.
+- `git diff --check`: **passed**.
+
+### Remaining boundaries
+
+- Only assembling machine 1 is currently available. Assembling machines 2/3, recipe selection, fluid ports and recipe-aware rotation are not implemented. The correction does not add these deferred settings or claim rocket-fuel layouts are supported.
+- The catalog and exact Factorio compatibility target remain provisional under #7. Milestone 2 import/export and the prior release gaps above remain open. No issue is closed by this correction.
+- The pre-existing local `vite.config.ts` port change is outside this fix and is preserved.
+
+## Editor spec TypeScript configuration fix — 2026-11-28
+
+References: [#8](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/8) (verification tooling) and [#27](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/27) (Milestone 1 browser checks).
+
+- `e2e/editor.spec.ts` and `playwright.config.ts` were outside the configured TypeScript projects. Reproduced TS2591 errors for the spec's `node:` imports under default compiler settings; the same spec passed with explicit Node types and modern language settings.
+- Added `e2e/tsconfig.json`, extending the Node configuration with DOM libraries for browser evaluation callbacks, strict checking and a separate build-info file. Referenced it from the root project so `npm run build` now also checks the browser tests and Playwright configuration. Test assertions and application behavior are unchanged.
+- Validation: `npm.cmd run lint` and `npm.cmd run build` passed. A clean `npm.cmd run test:e2e -- e2e/editor.spec.ts` run passed all **7 Chromium workflows in 35.8 seconds**. An earlier run was interrupted by Vite's full reload when the TypeScript configuration changed; the clean run includes the previously interrupted rotation workflow.
+- Existing milestone acceptance gaps and open compatibility decisions remain as documented above. The pre-existing `vite.config.ts` modification is preserved; no issues are closed by this tooling fix.
+
+### Vite configuration publication follow-up
+
+- At the user's request, include the existing `vite.config.ts` setting for development port `1000` in a separate commit on `fix/15-prototype-rotation`. References: [#8](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/8).
+- The lint and build checks above already passed with this setting present. Playwright continues to use its explicit port `5174`; all seven browser workflows passed with this configuration.

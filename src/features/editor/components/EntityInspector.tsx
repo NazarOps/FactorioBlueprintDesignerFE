@@ -18,12 +18,15 @@ export const EntityInspector = () => {
           <p className="break-all font-mono text-xs text-muted">{entity.prototype}</p>
           <dl className="my-6 grid grid-cols-2 gap-y-4 text-sm">
             <dt className="text-muted">Position</dt><dd className="font-mono">{entity.x}, {entity.y}</dd>
-            <dt className="text-muted">Direction</dt><dd>{DIRECTIONS[entity.direction]}</dd>
+            <dt className="text-muted">Direction</dt><dd>{definition.rotatable ? DIRECTIONS[entity.direction] : 'Not applicable'}</dd>
             <dt className="text-muted">Footprint</dt><dd>{definition.width} × {definition.height}</dd>
           </dl>
           <p className="mb-3 text-xs text-muted">Drag on the grid, or focus the grid and use arrow keys to move one tile.</p>
+          {!definition.rotatable && <p className="mb-3 text-xs text-muted">{entity.prototype === 'assembling-machine-1'
+            ? 'Assembling machine 1 has no fluid connections and cannot rotate.'
+            : 'This entity has no rotatable orientation.'}</p>}
           <div className="grid gap-2">
-            <button className="flex items-center justify-center gap-2 border border-line bg-raised px-3 py-2 text-sm hover:border-accent/50" onClick={state.rotate}><Icon name="rotate" /> Rotate clockwise</button>
+            <button disabled={!definition.rotatable} className="flex items-center justify-center gap-2 border border-line bg-raised px-3 py-2 text-sm hover:border-accent/50 disabled:opacity-30" onClick={state.rotate}><Icon name="rotate" /> Rotate clockwise</button>
             <button className="flex items-center justify-center gap-2 border border-line px-3 py-2 text-sm text-red-300 hover:bg-red-400/10" onClick={() => state.remove()}><Icon name="trash" /> Remove entity</button>
           </div>
         </> : <div className="py-5 text-center"><span className="mx-auto grid size-14 place-items-center rounded-full border border-line text-muted"><Icon name="select" /></span>
