@@ -4,6 +4,20 @@ A first draft of the guest frontend editor, built with React, TypeScript, PixiJS
 
 ![Editor draft with entity palette, grid workspace and inspector](docs/screenshots/editor-draft.png)
 
+## Current status
+
+The Milestone 1 editor draft includes entity editing, multiple local blueprints and automatic IndexedDB saves. The latest implementation validation passed lint, the production build, 8 unit/storage tests and 6 Chromium browser workflows, including browser restart and offline editing. Full milestone acceptance remains tracked in [#27](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/27).
+
+| Remaining work | Tracking |
+| --- | --- |
+| Confirm the prototype list, Factorio version and desktop browser matrix | [#7](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/7) |
+| Complete application routing and CI; measure representative performance | [#8](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/8), [#17](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/17) |
+| Wait for storage confirmation before removing deleted blueprints from the library UI | [#24](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/24) |
+| Complete accessibility and Milestone 1 acceptance checks | [#26](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/26), [#27](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/27) |
+| Implement and verify Factorio blueprint-string import/export for Milestone 2 | [#18](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/18), [#19](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/19), [#20](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/20), [#28](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/28), [#29](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/29) |
+
+These are open acceptance gaps, not a claim that V1 is release-ready. [PROGRESS.md](PROGRESS.md) records detailed evidence and the commit-to-issue mapping.
+
 ## Run locally
 
 ```sh
@@ -65,5 +79,18 @@ Vitest covers domain commands and IndexedDB persistence using fake-indexeddb. Pl
 - [Coding standards](docs/coding-standards/README.md)
 - [Project structure](docs/project-structure/README.md)
 - [Tech stack](docs/tech-stack/README.md)
+- [Repository instructions](AGENTS.md)
+- [Frontend issue tracker](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues)
 
 `src/app/` composes the UI; `features/editor/` owns commands and rendering; `features/blueprints/` owns document models, management UI and persistence; `shared/` supplies database plumbing and reusable controls. Future Factorio serialization belongs in its own feature boundary.
+
+## Contributing and issue references
+
+Read the V1 requirements and relevant frontend issues before implementation, including their acceptance criteria and dependencies. The requirements document and explicit scope decisions govern the work.
+
+- Reuse existing issues. When agreed requirements change and the new scope is not already tracked, create an issue before implementation with the reason, requirement IDs, acceptance criteria, dependencies and verification plan.
+- Make small, focused Conventional Commits and reference matching issues in their bodies, for example `Refs: #11, #13`. Use `Closes #N` only after the entire issue's acceptance criteria are implemented and verified.
+- Keep `PROGRESS.md` current with behavior, issue references, validation results and remaining gaps. PRs should link issues, explain the resulting behavior and include screenshots for UI changes.
+- Run lint, build and the tests relevant to the change. Record actual results and any verification limits.
+
+The complete workflow is defined in [AGENTS.md](AGENTS.md).

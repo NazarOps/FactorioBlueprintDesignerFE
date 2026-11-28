@@ -79,4 +79,10 @@ Issue numbers refer to [NazarOps/FactorioBlueprintDesignerFE](https://github.com
 
 ### Latest update
 
-Editor first draft complete, with the issue-level acceptance gaps documented above. Eight unit/storage tests and six browser workflows passed for the unchanged implementation. All eight original commits now reference frontend issues, and `AGENTS.md` defines the issue-tracking workflow for future implementation. Lint, production build and documentation whitespace checks pass. No remote push, issue closure or deployment has been performed.
+Editor first draft complete, with the issue-level acceptance gaps documented above. Eight unit/storage tests and six browser workflows passed for the unchanged implementation. All eight original commits now reference frontend issues, and `AGENTS.md` defines the issue-tracking workflow for future implementation. No issue closure or deployment has been performed.
+
+### README and branch publication follow-up — 2026-11-28
+
+- Updated the README with the verified draft status, linked remaining acceptance gaps, and the contributor workflow for issue review, new requirements, commit references and progress logging. References: #7, #8, #24, #25, #26, #27 and the existing Milestone 2 issues.
+- Application and test code remain unchanged; prior unit/browser results still apply. `npm run lint`, `npm run build` and `git diff --check` passed for this documentation update.
+- The user requested publication of `feat/editor-first-draft` to GitHub after the focused README commit. The push result will be verified against the remote branch and reported separately.
