@@ -114,3 +114,12 @@ References: [#15](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues
 - Only assembling machine 1 is currently available. Assembling machines 2/3, recipe selection, fluid ports and recipe-aware rotation are not implemented. The correction does not add these deferred settings or claim rocket-fuel layouts are supported.
 - The catalog and exact Factorio compatibility target remain provisional under #7. Milestone 2 import/export and the prior release gaps above remain open. No issue is closed by this correction.
 - The pre-existing local `vite.config.ts` port change is outside this fix and is preserved.
+
+## Editor spec TypeScript configuration fix — 2026-11-28
+
+References: [#8](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/8) (verification tooling) and [#27](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/27) (Milestone 1 browser checks).
+
+- `e2e/editor.spec.ts` and `playwright.config.ts` were outside the configured TypeScript projects. Reproduced TS2591 errors for the spec's `node:` imports under default compiler settings; the same spec passed with explicit Node types and modern language settings.
+- Added `e2e/tsconfig.json`, extending the Node configuration with DOM libraries for browser evaluation callbacks, strict checking and a separate build-info file. Referenced it from the root project so `npm run build` now also checks the browser tests and Playwright configuration. Test assertions and application behavior are unchanged.
+- Validation: `npm.cmd run lint` and `npm.cmd run build` passed. A clean `npm.cmd run test:e2e -- e2e/editor.spec.ts` run passed all **7 Chromium workflows in 35.8 seconds**. An earlier run was interrupted by Vite's full reload when the TypeScript configuration changed; the clean run includes the previously interrupted rotation workflow.
+- Existing milestone acceptance gaps and open compatibility decisions remain as documented above. The pre-existing `vite.config.ts` modification is preserved; no issues are closed by this tooling fix.
