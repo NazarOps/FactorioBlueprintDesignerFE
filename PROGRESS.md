@@ -123,3 +123,8 @@ References: [#8](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/
 - Added `e2e/tsconfig.json`, extending the Node configuration with DOM libraries for browser evaluation callbacks, strict checking and a separate build-info file. Referenced it from the root project so `npm run build` now also checks the browser tests and Playwright configuration. Test assertions and application behavior are unchanged.
 - Validation: `npm.cmd run lint` and `npm.cmd run build` passed. A clean `npm.cmd run test:e2e -- e2e/editor.spec.ts` run passed all **7 Chromium workflows in 35.8 seconds**. An earlier run was interrupted by Vite's full reload when the TypeScript configuration changed; the clean run includes the previously interrupted rotation workflow.
 - Existing milestone acceptance gaps and open compatibility decisions remain as documented above. The pre-existing `vite.config.ts` modification is preserved; no issues are closed by this tooling fix.
+
+### Vite configuration publication follow-up
+
+- At the user's request, include the existing `vite.config.ts` setting for development port `1000` in a separate commit on `fix/15-prototype-rotation`. References: [#8](https://github.com/NazarOps/FactorioBlueprintDesignerFE/issues/8).
+- The lint and build checks above already passed with this setting present. Playwright continues to use its explicit port `5174`; all seven browser workflows passed with this configuration.
